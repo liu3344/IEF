@@ -1,0 +1,55 @@
+@charset="utf-8"
+*{
+	margin: 0px;
+	padding: 0px;
+}
+.box{
+	/*基本样式*/
+	width: 90%;
+	height: 300px;
+	padding: 20px;
+	box-sizing: border-box;
+	border: solid 1px gray;
+
+	/*建立弹性框*/
+	display: -webkit-flex;
+	-webkit-flex-direction: row;
+
+	display: flex;
+	flex-direction: row;
+
+	justify-content: space-between;
+	align-items: center;
+}
+/*640px像素以上*/
+.box > div:nth-child(1){
+    width: 150px;
+    height: 120px;
+    border: solid 1px #f00;
+}
+.box > div:nth-child(2){
+	width: 150px;
+	height: 100px;
+	border: solid 1px #f00;
+}
+.box > div:nth-child(3){
+	width: 150px;
+	height: 40px;
+	border: solid 1px #f00;
+}
+.box > div:nth-child(4){
+	width: 150px;
+	height: 200px;
+	border: solid 1px #0f0;
+}
+/*640px以下*/
+@media screen and (max-width: 640px){
+	.box{
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.box > div:nth-child(4){
+		order: -1;
+	}
+}
