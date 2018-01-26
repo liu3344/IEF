@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>任务四：基础JavaScript练习（一）</title>
+	<style type="text/css">
+	    button{background-color: #fff; border: 1px solid #000; border-radius: 5px;}
+		li{
+            display:inline-block;
+            background-color: #cd4a48;
+            color: #f3f6f7;
+            font-size:20px;
+            text-align:center;
+            padding:5px;
+            margin:5px;
+            cursor:pointer;
+        }
+	</style>
+</head>
+<body>
+     
+     <!--模拟一个队列，队列的每个元素是一个数字，初始队列为空
+有一个input输入框，以及4个操作按钮
+
+点击"左侧入"，将input中输入的数字从左侧插入队列中；
+点击"右侧入"，将input中输入的数字从右侧插入队列中；
+点击"左侧出"，读取并删除队列左侧第一个元素，并弹窗显示元素中数值；
+点击"右侧出"，读取并删除队列又侧第一个元素，并弹窗显示元素中数值；
+点击队列中任何一个元素，则该元素会被从队列中删除
+    -->
+    <input type="text" id="inNum" name="number">
+    <button id="btn_LfetIn">左侧入</button>
+    <button id="btn_RightIn">右侧入</button>
+    <button id="btn_LfetOut">左侧出</button>
+    <button id="btn_RightOut">右侧出</button>
+   
+    <ul id="outNum"></ul>
+    <script type="text/javascript">
+		var inNum = document.getElementById("inNum");
+		var outNum = document.getElementById("outNum");
+		var LfetIn = document.getElementById("btn_LfetIn");
+		var RightIn = document.getElementById("btn_RightIn");
+		var LfetOut = document.getElementById("btn_LfetOut");
+		var RightOut = document.getElementById("btn_RightOut");	
+
+		
+		function insert(direction) {
+		 	if (inNum.value == "") {
+		 		alert("请输入你要插入的数字");//输入框为空的时候，点击提示
+		 		inNum.focus();
+		 	} else if(isNaN(inNum.value)) {
+		 		alert("请不要输入一个非数字");//输入框为非数字的时候，点击提示
+		 		inNum.value = "";
+		 		inNum.focus();
+		 	}else{
+		 		var oLi = document.createElement('li');
+		 		oLi.innerHTML = inNum.value;
+		 		if (direction === "left") {//点击左侧插入
+		 			outNum.insertBefore(oLi,outNum.firstChild); //生成的LI元素左侧插入
+		 		}else if(direction === "right") { //点击右侧插入
+		 			outNum.appendChild(oLi);  //生成的LI元素右侧插入
+		 		}
+		 	}
+		 } 
+		  function del(node,direction){
+            if(outNum.childNodes.length<=0){
+                alert("不存在元素可以删除");
+                return false;
+            } else{
+                if(direction === "left"){  //点击左侧按钮删除
+                    alert("删除数字：" +outNum.firstChild.innerText +"！");
+                    outNum.removeChild(outNum.firstChild);
+                } else if(direction === "right"){  //点击右侧按钮删除
+                    alert("删除数字：" +outNum.lastChild.innerText +"！");
+                    outNum.removeChild(outNum.lastChild);
+                }else{ //点击li标签删除
+                    alert("删除数字：" +outNum.removeChild(node).innerText +"！");
+                }
+            }
+        }
+        
+        outNum.addEventListener('click', function(e) {
+            alert("确定删除此数字！");
+		    outNum.removeChild(e.target);//点击队列中任何一个元素，则该元素会被从队列中删除
+	    });
+	   
+		 LfetIn.onclick = function(){
+		 	insert("left");
+		 }
+		 RightIn.onclick = function () {
+		 	insert("right");
+		 };
+		 LfetOut.onclick = function() {
+		 	del(-1,"left");
+		 };
+		 RightOut.onclick = function(){
+		 	del(-1,"right");
+		 };
+		 outNnm.onclick = function(){
+		 	del(event.target);
+		 };
+	</script>
+</body>
+</html>
