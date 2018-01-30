@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>任务五：基础JavaScript练习（二）</title>
+	<style type="text/css">
+	    button{background-color: #fff; border: 1px solid #000; border-radius: 5px;cursor: pointer;}
+		#Num li{
+            display:inline-block;
+            background-color: #cd4a48;
+            color: #f3f6f7;
+            width: 10px;
+            font-size:10px;
+            text-align:center;
+            padding:5px;
+            margin:2px;
+            cursor:pointer;
+        }
+        #hint {
+        	margin: 0;
+        	font-weight: bold;
+        	color: red;
+        	padding-left: 2px;
+        }
+	</style>
+</head>
+<body>
+	<!-- 基于上一任务
+	限制输入的数字在10-100
+	队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示
+	队列展现方式变化如图，直接用高度表示数字大小
+	实现一个简单的排序功能，如冒泡排序（不限制具体算法），用可视化的方法表达出来，参考见下方参考资料 -->
+	<input type="text" id="inNum" name="number" placeholder="请输入10-100之间的数字" />
+    <button id="leftIn" onclick="insert('left')">左侧入</button>
+    <button id="rightIn" onclick="insert('right')" >右侧入</button>
+    <button id="leftOut" onclick="del(-1,'left')">左侧出</button>
+    <button id="rightOut" onclick="del(-1,'right')">右侧出</button>
+    <button id="sort" onclick="sort()">冒泡排序</button>
+    <br/>
+    <p id="hint"></p>
+   
+    <ul id="Num"></ul>
+    <script type="text/javascript">	
+		function $(id){return document.getElementById(id);}
+		var numArray = []; //收集数列
+
+		$("inNum").focus();  //自动获得input焦点
+		$("inNum").onmouseover = function () {
+			this.select();
+		}  //鼠标经过选取整个数字
+
+		/*每次输入的时候 清除id=hint的表单验证的文字，onpropertychange 兼容 IE 7-9*/
+		$("inNum").oninput = $("inNum").onpropertychange = function(){
+			$("hint").innerHTML = " ";
+		}
+
+		//插入函数
+		function insert(direction) {       //插入数字
+			if ($("inNum").value == "") {  //判断用户是否输入
+			    $("hint").innerHTML = "请输入你要插入的数字";
+
+			} else if (isNaN($("inNum").value)) { //判断用户输入的是否是数字
+    			$("hint").innerHTML = "请输入一个正确的数字";
+
+			} else if ($("inNum").value <10 || $("inNum").value > 100) {
+				$("hint").innerHTML = "请输入10-100之间的数字";
+
+			} else if ($("Num").childNodes.length > 60) {
+					alert("队列元素数量最多限制为60个");
+					return false;
+			} else{
+
+					var oli = document.createElement("li"); //创造新的子节点
+					/*oli.innerHTML = $("inNum").value;  */
+					if (direction === "left") {
+						//numArray.unshift($("inNum").value);
+						$("Num").insertBefore(oli,$("Num").firstChild);//左侧插入
+						oli.style.height = $("inNum").value*2 + "px";
+					}else if (direction === "right") {
+						//numArray.push($("inNum").value);
+						$("Num").appendChild(oli);//右侧插入
+						oli.style.height = $("inNum").value*2 + "px";
+					}
+			}
+		}
+		//删除函数
+		function del(node,direction) {
+			if ($("Num").childNodes.length < 0) {
+				$("hint").innerHTML = "没有数字可以删除";
+				return false;
+			}else{
+				if (direction === "left") {//左侧删除
+					alert("确定删除该列"+ "！");
+					//numArray.push($("inNum").value);
+					$("Num").removeChild($("Num").firstChild);
+				}else if(direction === "right") {//右侧删除
+					alert("确定删除该列"+ "！");
+					$("Num").removeChild($("Num").lastChild);
+				}
+			}
+		}
+		//点击删除
+		$("Num").addEventListener('click', function(e) {
+            alert("确定删除该列！");
+		    $("Num").removeChild(e.target);//点击队列中任何一个元素，则该元素会被从队列中删除
+	    });
+
+		function sort() {
+			var queue = document.getElementById('Num').children;
+			for (var i = 1; i < queue.length; i++) {
+				for (var j = 0; j < queue.length-i; j++) {
+					if (parseInt(queue[j].style.height) > parseInt(queue[j+1].style.height)) {
+						var tmp = queue[j+1].style.height;
+						queue[j+1].style.height = queue[j].style.height;
+						queue[j].style.height = tmp;
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
