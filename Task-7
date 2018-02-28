@@ -1,1 +1,131 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务七：JavaScript和树（一）</title>
+	<style type="text/css">
+		.tree{
+			display: flex;
+			width: 640px;
+			border: solid 2px #000;
+			align-items: center;
+			justify-content: center;
+			box-sizing: border-box;
+
+		}
+		.node {
+			display: flex;
+			border: solid 2px #000;
+			align-items: center;
+			margin: 10px;
+			min-height: 40px;
+			min-width: 40px;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+	<div id="tree" class="tree">
+		<div class="node">
+			<div class="node">
+				<div class="node"></div>
+				<div class="node"></div>
+			</div>
+			<div class="node">
+				<div class="node"></div>
+				<div class="node"></div>
+			</div>
+		</div>
+		<div class="node">
+			<div class="node">
+				<div class="node"></div>
+				<div class="node"></div>
+			</div>
+			<div class="node">
+				<div class="node"></div>
+				<div class="node"></div>
+			</div>
+		</div>
+	</div>
+	<br/>
+	<div class="btn">
+		<button id="blr">前序遍历</button>
+		<button id="ldr">中序遍历</button>
+		<button id="lrd">后序遍历</button>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	var btn1 = document.getElementById("blr");
+	var btn2= document.getElementById("ldr");
+	var btn3 = document.getElementById("lrd");
+	var tree = document.getElementById("tree");
+	var aDivs = [];
+	var timer = null;
+	btn1.onclick = function() {
+		clear();
+		preOrder(tree);
+		changeColor();
+	}
+	btn2.onclick = function() {
+		clear();
+		inOrder(tree);
+		changeColor();
+	}
+	btn3.onclick = function() {
+		clear();
+		postOrder(tree);
+		changeColor();
+	}
+	//先序遍历
+	function preOrder(node){
+	    if(!(node == null)){
+	    	aDivs.push(node);
+	        preOrder(node.firstElementChild);
+	        preOrder(node.lastElementChild);
+	    }
+	}
+
+	//使用递归方式实现中序遍历
+	function inOrder(node){
+	    if(!(node == null)){
+	        inOrder(node.firstElementChild);//先访问左子树
+	        aDivs.push(node);
+	        inOrder(node.lastElementChild);//最后访问右子树
+	    }
+	}
+	//后序遍历
+	function postOrder(node){
+	    if(!(node == null)){
+	        postOrder(node.firstElementChild);
+	        postOrder(node.lastElementChild);
+	        aDivs.push(node);
+	    }
+	}
+	//改变颜色
+	function changeColor() {
+		var i = 0;
+		aDivs[i].style.background = "#0001FC";
+		timer = setInterval(function(){
+			i++;
+			if (i < aDivs.length) {
+				aDivs[i-1].style.background = "#FFF";
+				aDivs[i].style.background = "#0001FC";
+			}
+			else {
+				clearInterval(timer);
+				aDivs[aDivs.length-1].style.background = "#FFF";
+			}
+		},500);
+	}
+	
+	function clear(){
+		aDivs = [];
+		clearInterval(timer);
+		var oDiv = document.getElementsByTagName('div');
+		for (var i = 0; i < oDiv.length; i++) {
+			oDiv[i].style.background = "#fff";
+		}
+	}
+</script>
